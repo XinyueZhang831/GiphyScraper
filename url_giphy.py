@@ -24,20 +24,22 @@ def collect_img(driver,stop_num,counter):
 
 
     for each_img in image_list[stop_num:]:
-        image_url = each_img.find_element_by_xpath('.//div/img').get_attribute('src')
-        image_tag = each_img.find_elements_by_xpath('.//div/div[2]/span')
+        #image_url = each_img.find_element_by_xpath('.//div/img').get_attribute('src')
+        image_url = each_img.find_element_by_xpath('.//div/picture/img').get_attribute('src')
+        #image_tag = each_img.find_elements_by_xpath('.//div/div[2]/span')
         if image_url == 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7':
             actions = ActionChains(driver)
             actions.move_to_element(each_img).perform()
             return driver, stop_num, df,counter
 
         tag_list = []
-        for each_tag in image_tag:
-            tag = each_tag.get_attribute('textContent')
-            tag_list.append(tag)
+        #for each_tag in image_tag:
+        #    tag = each_tag.get_attribute('textContent')
+        #    tag_list.append(tag)
         data = {'image_url': image_url, 'image_tag':tag_list}
         df = df.append(data,ignore_index=True)
         stop_num = stop_num+1
+        print(data)
     end_numb = counter*650
     driver.execute_script("window.scrollTo(0, "+str(end_numb)+")")
     counter = counter+1
